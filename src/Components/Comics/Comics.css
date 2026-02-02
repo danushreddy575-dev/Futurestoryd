@@ -1,0 +1,14 @@
+.card {
+  margin: 30px;
+  border: none;
+  overflow: hidden;
+}
+.profileimage {
+  width: 100%;
+  height: 250px;
+}
+.bt{
+  border-radius: 8%;
+  background-color: rgb(151, 206, 206);
+  color: aliceblue;
+}

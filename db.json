@@ -1,0 +1,207 @@
+{
+  "Books": [
+    {
+      "name": "The Great Gatsby",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Fiction",
+      "price": 299,
+      "rating": 4.5,
+      "id": "1"
+    },
+    {
+      "name": "Good Grief",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Non-Fiction",
+      "price": 234,
+      "rating": 3.5,
+      "id": "2"
+    },
+    {
+      "name": "The Great",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Fiction",
+      "price": 444,
+      "rating": 4.3,
+      "id": "3"
+    },
+    {
+      "name": "Harry Potter",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Fiction",
+      "price": 745,
+      "rating": 4.8,
+      "id": "4"
+    },
+    {
+      "name": "King",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Non-Fiction",
+      "price": 450,
+      "rating": 4.8,
+      "id": "5"
+    },
+    {
+      "name": "sololeveling",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Comics",
+      "price": 234,
+      "rating": 3.5,
+      "id": "6"
+    },
+    {
+      "name": "Baku",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Comics",
+      "price": 450,
+      "rating": 4.8,
+      "id": "7"
+    },
+    {
+      "name": "The Goat",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Children",
+      "price": 234,
+      "rating": 3.5,
+      "id": "8"
+    },
+    {
+      "name": "Sevem King",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Children",
+      "price": 450,
+      "rating": 4.8,
+      "id": "9"
+    }
+  ],
+  "Fiction": [
+    {
+      "name": "The Great Gatsby",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Fiction",
+      "price": 299,
+      "rating": 4.5,
+      "id": "1"
+    },
+    {
+      "name": "The Great",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Fiction",
+      "price": 444,
+      "rating": 4.3,
+      "id": "3"
+    },
+    {
+      "name": "Harry Potter",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Fiction",
+      "price": 745,
+      "rating": 4.8,
+      "id": "4"
+    }
+  ],
+  "Non-Fiction": [
+    {
+      "name": "Good Grief",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Non-Fiction",
+      "price": 234,
+      "rating": 3.5,
+      "id": "2"
+    },
+    {
+      "name": "King",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Non-Fiction",
+      "price": 450,
+      "rating": 4.8,
+      "id": "5"
+    }
+  ],
+  "Comics": [
+    {
+      "name": "sololeveling",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Comics",
+      "price": 234,
+      "rating": 3.5,
+      "id": "6"
+    },
+    {
+      "name": "Baku",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Comics",
+      "price": 450,
+      "rating": 4.8,
+      "id": "7"
+    }
+  ],
+  "Childrenbook": [
+    {
+      "name": "The Goat",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Children",
+      "price": 234,
+      "rating": 3.5,
+      "id": "8"
+    },
+    {
+      "name": "Sevem King",
+      "image": "https://cdn.shopify.com/s/files/1/0070/1884/0133/t/8/assets/pf-b57dac15--Books8_1200x.jpg?v=1620061403",
+      "genre": "Children",
+      "price": 450,
+      "rating": 4.8,
+      "id": "9"
+    }
+  ],
+  "Account": [
+    {
+      "id": "eb77",
+      "name": "danushreddy575",
+      "email": "danushreddy575@gmail.com",
+      "mobile": "9849815575",
+      "password": "123456",
+      "cart": []
+    },
+    {
+      "id": "7b2c",
+      "name": "bnn",
+      "email": "assaddd@gmail",
+      "mobile": "0984981557",
+      "password": "uu1234",
+      "cart": []
+    },
+    {
+      "id": "da95",
+      "name": "Mamindla Danush Reddy",
+      "email": "23eg105t39@anurag.edu.in",
+      "mobile": "9849815575",
+      "password": "789456",
+      "cart": [
+        {
+          "id": 2,
+          "name": "Mrs. Dalloway",
+          "genre": "Fiction",
+          "image": "http://books.google.com/books/content?id=OqAFAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+          "price": 293,
+          "rating": "4.9"
+        },
+        {
+          "id": 1,
+          "name": "Journey to the Center of the Earth",
+          "genre": "Fiction",
+          "image": "http://books.google.com/books/content?id=icKmd-tlvPMC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+          "price": 116,
+          "rating": "4.6"
+        }
+      ]
+    },
+    {
+      "id": "1eec",
+      "name": "MMM",
+      "email": "assaddd@gmail",
+      "mobile": "0984981557",
+      "password": "147852",
+      "cart": []
+    }
+  ]
+}

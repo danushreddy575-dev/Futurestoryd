@@ -1,0 +1,35 @@
+.navi{
+    background-color: rgb(180, 197, 197);
+}
+/* Base: full width (mobile-first approach) */
+.navbar .search-form {
+  width: 100%;
+}
+
+/* Tablets (≥576px and ≤768px) */
+@media (min-width: 576px) and (max-width: 768px) {
+  .navbar .search-form {
+    max-width: 400px;
+  }
+}
+
+/* Small desktops (≥769px and ≤992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+  .navbar .search-form {
+    max-width: 500px;
+  }
+}
+
+/* Medium desktops (≥993px and ≤1200px) */
+@media (min-width: 993px) and (max-width: 1200px) {
+  .navbar .search-form {
+    max-width: 600px;
+  }
+}
+
+/* Large screens (≥1201px) */
+@media (min-width: 1201px) {
+  .navbar .search-form {
+    max-width: 700px;
+  }
+}
