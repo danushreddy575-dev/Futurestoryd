@@ -17,7 +17,7 @@ function Account() {
       }
 
       const res = await axios.get(
-        "https://futurestorydbackend.onrender.com//api/users/me",
+        "https://futurestorydbackend.onrender.com/api/users/me",
         {
           headers: { Authorization: `Bearer ${token}` }
         }

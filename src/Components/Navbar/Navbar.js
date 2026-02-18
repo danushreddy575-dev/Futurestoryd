@@ -15,8 +15,6 @@ function Navbar() {
     const syncUser = () => {
       const token = localStorage.getItem("token");
       const storedUser = localStorage.getItem("user");
-
-      // ⭐ token is source of truth
       setUser(token && storedUser ? JSON.parse(storedUser) : null);
     };
 

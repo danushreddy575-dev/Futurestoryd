@@ -9,7 +9,7 @@ function Cart() {
   const fetchCart = useCallback(async () => {
     try {
       const res = await axios.get(
-        "https://futurestorydbackend.onrender.com//api/users/cart",
+        "https://futurestorydbackend.onrender.com/api/users/cart",
         {
           headers: {
 
