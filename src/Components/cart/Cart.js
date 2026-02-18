@@ -1,90 +1,100 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 function Cart() {
   const [error, setError] = useState("");
-  const [carties, setCarties] = useState([]);
-  const [userId, setUserId] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
 
-  // Get userId dynamically (e.g. from localStorage)
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser && storedUser.id) {
-      setUserId(storedUser.id);
-    } else {
-      setError("User not logged in");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!userId) return;
-
-    axios
-      .get(`http://localhost:4000/Account/${userId}`)
-      .then((response) => {
-        if (response.status === 200) {
-          setCarties(response.data.cart || []);
-        }
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
-  }, [userId]);
-
-  const removeFromCart = async (id) => {
+  const token = localStorage.getItem("token");
+  const fetchCart = useCallback(async () => {
     try {
-      if (!id) throw new Error("Invalid id passed to removeFromCart");
+      const res = await axios.get(
+        "http://localhost:5000/api/users/cart",
+        {
+          headers: {
 
-      // get user first
-      const userRes = await axios.get(
-        `http://localhost:4000/Account/${userId}`
+            
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      const userData = userRes.data;
 
-      // filter cart
-      const updatedCart = userData.cart.filter((item) => item.id !== id);
-
-      // update db.json
-      await axios.put(`http://localhost:4000/Account/${userId}`, {
-        ...userData,
-        cart: updatedCart,
-      });
-
-      // update UI
-      setCarties(updatedCart);
+      setCartItems(res.data || []);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (!token) {
+      setError("User not logged in");
+      return;
+    }
+
+    fetchCart();
+  }, [fetchCart, token]);
+
+  const removeFromCart = async (productId) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/api/users/cart/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCartItems(res.data || []);
+    } catch (err) { 
+      setError(err.response?.data?.message || err.message);
     }
   };
 
   return (
-    <div className="container">
+    <div className="container mt-4">
+
       {error && (
-        <p className="display-3 text-danger text-center">{error}</p>
+        <p className="display-6 text-danger text-center">{error}</p>
       )}
-      {carties.map((userObj) => (
+
+
+
+
+      {!error && cartItems.length === 0 && (
+        <div className="text-center mt-5">
+          <h4>Your cart is empty 🛒</h4>
+          <p className="text-muted">Add some books to start reading!</p>
+        </div>
+      )}
+
+      {/* CART ITEMS */}
+      {cartItems.map((item, index) =>(
         <div
           className="card mb-3"
           style={{ maxWidth: "540px" }}
-          key={userObj.id}
+          key={item._id || `${item.productId}-${index}`}
         >
           <div className="row g-0">
+ 
+            {/* Image */}
             <div className="col-md-4">
               <img
-                src={userObj.image}
+                src={item.image}
                 className="img-fluid rounded-start"
-                alt={userObj.name}
+                alt={item.title}
               />
             </div>
+
+            {/* Details */}
             <div className="col-md-8">
               <div className="card-body">
-                <h5 className="card-title">{userObj.name}</h5>
-                <p className="card-text">{userObj.genre}</p>
-                <p className="card-text fw-bold">₹{userObj.price}</p>
-                <p className="card-text text-warning">⭐ {userObj.rating}</p>
+                <h5 className="card-title">{item.title}</h5>
+                <p>Quantity: {item.quantity}</p>
+                <p className="fw-bold">₹{item.price}</p>
+
                 <button
                   className="btn btn-danger mt-2"
-                  onClick={() => removeFromCart(userObj.id)}
+                  onClick={() => removeFromCart(item.productId)}
                 >
                   Remove
                 </button>

@@ -74,7 +74,6 @@ function Comics() {
                 <p className="fw-bold">₹{bookObj.price}</p>
                 <p className="text-warning">⭐ {bookObj.rating}</p>
 
-                {/* ✅ button unchanged */}
                 <button
                   className="bt"
                   onClick={() => goToCart(bookObj)}

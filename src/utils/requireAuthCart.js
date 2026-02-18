@@ -1,10 +1,16 @@
-export const requireAuthCart = (bookObj, navigate, setError, addToCartFn) => {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+export const requireAuthCart = (
+  bookObj,
+  navigate,
+  setError,
+  addToCart
+) => {
+  const token = localStorage.getItem("token");
 
-  if (!storedUser || !storedUser.id) {
-    window.dispatchEvent(new Event("openLogin"));
+  if (!token) {
+    setError("Please login first");
+    navigate("/login");
     return;
   }
 
-  addToCartFn(bookObj, navigate, setError);
+  addToCart(bookObj, navigate, setError);
 };
