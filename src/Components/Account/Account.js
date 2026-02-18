@@ -46,7 +46,6 @@ function Account() {
 
         <p><strong>Username:</strong> {member.username}</p>
         <p><strong>Email:</strong> {member.email}</p>
-        <p><strong>Mobile:</strong> {member.mobile}</p>
         
         <button
           className="btn btn-outline-danger mt-3"
