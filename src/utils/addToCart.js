@@ -8,7 +8,7 @@ export const addToCart = async (bookObj, navigate, setError) => {
       return;
     }
     await axios.post(
-      "http://localhost:5000/api/users/cart",
+      "https://futurestorydbackend.onrender.com/api/users/cart",
       {
         productId: bookObj.id,
         title: bookObj.name,

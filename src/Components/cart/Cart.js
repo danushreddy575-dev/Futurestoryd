@@ -9,7 +9,7 @@ function Cart() {
   const fetchCart = useCallback(async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/users/cart",
+        "https://futurestorydbackend.onrender.com//api/users/cart",
         {
           headers: {
 
@@ -37,7 +37,7 @@ function Cart() {
   const removeFromCart = async (productId) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/users/cart/${productId}`,
+        `https://futurestorydbackend.onrender.com/api/users/cart/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -24,13 +24,11 @@ function Childrenbook() {
     try {
       const cached = localStorage.getItem("childrenBooks");
 
-      //  if cached → instant load
       if (cached) {
         setBooks(JSON.parse(cached));
         return;
       }
 
-      //  first time only → call API
       const res = await axios.get(
         "https://www.googleapis.com/books/v1/volumes?q=subject:children&maxResults=20"
       );
@@ -38,8 +36,6 @@ function Childrenbook() {
       const formatted = formatBooks(res.data.items, "Children");
 
       setBooks(formatted);
-
-      // ✅ save cache
       localStorage.setItem(
         "childrenBooks",
         JSON.stringify(formatted)

@@ -14,7 +14,7 @@ function Login({ onClose, onLoginSuccess, onSwitchToRegister }) {
 
     try {
       const loginRes = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://futurestorydbackend.onrender.com/api/auth/login",
         {
           username: username.trim(),
           password: password.trim()
@@ -27,7 +27,7 @@ function Login({ onClose, onLoginSuccess, onSwitchToRegister }) {
       localStorage.setItem("token", token);
 
       const userRes = await axios.get(
-        "http://localhost:5000/api/users/me",
+        "https://futurestorydbackend.onrender.com/api/users/me",
         {
           headers: {
             Authorization: `Bearer ${token}`
