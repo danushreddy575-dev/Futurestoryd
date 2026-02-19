@@ -161,6 +161,10 @@ function Navbar() {
       user={user}
       onLoginClick={() => setShowLogin(true)}
     />
+    <MobileCategories
+      show={showMobileCategories}
+      onClose={() => setShowMobileCategories(false)}
+    />
     </div>
   );
 }
