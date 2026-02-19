@@ -42,6 +42,19 @@ function Navbar() {
       window.removeEventListener("authChanged", syncUser);
     };
   }, []);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth <= 768 && window.scrollY > 80) {
+        setShowMobileCategories(true);
+      } else {
+        setShowMobileCategories(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
 
   const handleLoginSuccess = () => {
     const storedUser = localStorage.getItem("user");
@@ -147,9 +160,9 @@ function Navbar() {
     onBooksClick={() => setShowMobileCategories(true)}
     />
 
-    <MobileCategories
-      show={showMobileCategories}
-      onClose={() => setShowMobileCategories(false)}
+    <MobileBottomNav
+      user={user}
+      onLoginClick={() => setShowLogin(true)}
     />
     </div>
   );

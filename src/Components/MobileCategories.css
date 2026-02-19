@@ -1,36 +1,23 @@
-.mobile-cat-overlay {
+.mobile-cat {
   display: none;
 }
 
 @media (max-width: 768px) {
-  .mobile-cat-overlay {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
+  .mobile-cat {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 10px;
+    background: white;
+    position: sticky;
+    top: 0;
     z-index: 999;
   }
 
-  .mobile-cat {
-    position: absolute;
-    bottom: 60px;
-    width: 100%;
-    background: white;
-    border-radius: 12px 12px 0 0;
-    padding: 16px;
-  }
-
-  .mobile-cat p {
-    padding: 12px;
-    font-size: 16px;
-    border-bottom: 1px solid #eee;
-  }
   .mobile-cat a {
-  display: block;
-  padding: 12px;
-  color: black;
-  text-decoration: none;
-  border-bottom: 1px solid #eee;
-}
-
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    white-space: nowrap;
+  }
 }
