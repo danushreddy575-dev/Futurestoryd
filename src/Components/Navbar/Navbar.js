@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import Modal from "../Modal/Modal";
 import Login from "../Login/Login";
 import Register from "../Registration/Register";
-import MobileBottomNav from "../MobileBottomNav/MobileBottomNav";
-import MobileCategories from "../MobileCategories/MobileCategories";
+import MobileBottomNav from "./MobileBottomNav";
+import MobileCategories from "../MobileCategories";
 import { FaUserCircle, FaShoppingCart, FaBookOpen } from "react-icons/fa";
 
 function Navbar() {
