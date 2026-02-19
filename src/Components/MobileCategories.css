@@ -25,4 +25,12 @@
     font-size: 16px;
     border-bottom: 1px solid #eee;
   }
+  .mobile-cat a {
+  display: block;
+  padding: 12px;
+  color: black;
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+}
+
 }
