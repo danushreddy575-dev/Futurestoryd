@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 
 function Register({ onClose, onSwitchToLogin }) {
+  console.log("ssdsd")
   const {
     register,
     handleSubmit,
