@@ -1,0 +1,28 @@
+.mobile-cat-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-cat-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 999;
+  }
+
+  .mobile-cat {
+    position: absolute;
+    bottom: 60px;
+    width: 100%;
+    background: white;
+    border-radius: 12px 12px 0 0;
+    padding: 16px;
+  }
+
+  .mobile-cat p {
+    padding: 12px;
+    font-size: 16px;
+    border-bottom: 1px solid #eee;
+  }
+}

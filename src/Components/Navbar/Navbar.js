@@ -4,9 +4,12 @@ import { useState, useEffect } from "react";
 import Modal from "../Modal/Modal";
 import Login from "../Login/Login";
 import Register from "../Registration/Register";
+import MobileBottomNav from "../MobileBottomNav/MobileBottomNav";
+import MobileCategories from "../MobileCategories/MobileCategories";
 import { FaUserCircle, FaShoppingCart, FaBookOpen } from "react-icons/fa";
 
 function Navbar() {
+  const [showMobileCategories, setShowMobileCategories] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [user, setUser] = useState(null);
@@ -140,6 +143,14 @@ function Navbar() {
         onSwitchToLogin={switchToLogin}
       />
     </Modal>
+    <MobileBottomNav
+    onBooksClick={() => setShowMobileCategories(true)}
+    />
+
+    <MobileCategories
+      show={showMobileCategories}
+      onClose={() => setShowMobileCategories(false)}
+    />
     </div>
   );
 }

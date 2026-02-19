@@ -12,3 +12,9 @@
   background-color: rgb(83, 85, 85);
   color: aliceblue;
 }
+@media (max-width: 768px) {
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
