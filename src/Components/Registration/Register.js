@@ -50,6 +50,7 @@ function Register({ onClose, onSwitchToLogin }) {
           cursor: "pointer",
         }}
       >
+        {console.log(onClose)}
         ×
       </button>
       <h3 className="fw-bold text-center mb-3">Create an Account</h3>
