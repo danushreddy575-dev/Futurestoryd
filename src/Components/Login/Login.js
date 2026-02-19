@@ -75,6 +75,7 @@ function Login({ onClose, onLoginSuccess, onSwitchToRegister }) {
           cursor: "pointer",
         }}
       >
+        {console.log(onClose)}
         ×
       </button>
       <h3 className="mb-4 fw-bold text-center">Log in</h3>
