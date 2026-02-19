@@ -38,6 +38,7 @@ function Register({ onClose, onSwitchToLogin }) {
       style={{ width: "100%", maxWidth: "420px", borderRadius: "12px" }}
     >
       <button
+        type="button"   
         onClick={onClose}
         style={{
           position: "absolute",
@@ -46,12 +47,11 @@ function Register({ onClose, onSwitchToLogin }) {
           border: "none",
           background: "none",
           fontSize: "20px",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
       >
         ×
       </button>
-
       <h3 className="fw-bold text-center mb-3">Create an Account</h3>
 
       <form onSubmit={handleSubmit(onSubmit)}>
