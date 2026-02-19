@@ -10,6 +10,19 @@ function Navbar() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [user, setUser] = useState(null);
+  const closeLogin = () => setShowLogin(false);
+  const closeRegister = () => setShowRegister(false);
+
+  const switchToRegister = () => {
+    setShowLogin(false);
+    setShowRegister(true);
+  };
+
+  const switchToLogin = () => {
+    setShowRegister(false);
+    setShowLogin(true);
+  }; 
+
 
   useEffect(() => {
     const syncUser = () => {
@@ -111,28 +124,22 @@ function Navbar() {
         </div>
       </nav>
 
-      <Modal show={showLogin} onClose={() => setShowLogin(false)}>
-        <Login onLoginSuccess={handleLoginSuccess} />
-      </Modal>
 
-      <Modal show={showLogin} onClose={() => setShowLogin(false)}>
+    {/* LOGIN MODAL */}
+    <Modal show={showLogin} onClose={closeLogin}>
       <Login
-        onClose={() => setShowLogin(false)}
+        onClose={closeLogin}
         onLoginSuccess={handleLoginSuccess}
-        onSwitchToRegister={() => {
-          setShowLogin(false);
-          setShowRegister(true); 
-        }}
+        onSwitchToRegister={switchToRegister}
       />
-      </Modal>
-      <Modal show={showRegister} onClose={() => setShowRegister(false)}>
-        <Register
-          onSwitchToLogin={() => {
-            setShowRegister(false);
-            setShowLogin(true);
-          }}
-        />
-      </Modal>
+    </Modal>
+    {/* REGISTER MODAL */}
+    <Modal show={showRegister} onClose={closeRegister}>
+      <Register
+        onClose={closeRegister}
+        onSwitchToLogin={switchToLogin}
+      />
+    </Modal>
     </div>
   );
 }
