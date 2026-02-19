@@ -156,9 +156,6 @@ function Navbar() {
         onSwitchToLogin={switchToLogin}
       />
     </Modal>
-    <MobileBottomNav
-    onBooksClick={() => setShowMobileCategories(true)}
-    />
 
     <MobileBottomNav
       user={user}
