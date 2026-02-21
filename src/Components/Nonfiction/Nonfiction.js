@@ -59,7 +59,7 @@ function Nonfiction() {
         <p className="display-6 text-danger text-center">{error}</p>
       )}
 
-      <div className="row row-cols-1 row-cols-md-5 g-4">
+      <div className="row row-cols-2 row-cols-md-5 g-4">
         {books.map((bookObj) => (
           <div className="col text-center" key={bookObj.id}>
             <div className="card h-100 card-margin">
