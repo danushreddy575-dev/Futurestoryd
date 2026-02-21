@@ -42,18 +42,6 @@ function Navbar() {
       window.removeEventListener("authChanged", syncUser);
     };
   }, []);
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerWidth <= 768 && window.scrollY > 80) {
-        setShowMobileCategories(true);
-      } else {
-        setShowMobileCategories(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
 
   const handleLoginSuccess = () => {
