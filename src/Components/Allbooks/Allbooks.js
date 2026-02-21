@@ -83,7 +83,7 @@ function Allbooks() {
     <h2 className={`section-title ${className}`}>
       {title}
     </h2>
-      <div className="row row-cols-2 row-cols-md-4 g-4">
+      <div className="row row-cols-1 row-cols-md-4 g-4">
         {books.map((book) => (
           <div className="col text-center" key={book.id}>
             <div className="card h-80 card-margin">
