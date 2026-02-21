@@ -35,3 +35,25 @@ main {
 #root, .navi {
   overflow: visible !important;
 }
+/* 📱 MOBILE ONLY — force 2 cards per row */
+@media (max-width: 768px) {
+
+  /* Parent of book cards */
+  .books,
+  .books-container,
+  .fiction-container,
+  .nonfiction-container,
+  .comics-container,
+  .children-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 10px;
+  }
+
+  /* Book card itself */
+  .book-card,
+  .card {
+    width: 100% !important;
+  }
+}
