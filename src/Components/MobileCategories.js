@@ -6,14 +6,15 @@ function MobileCategories({ show, onClose }) {
 
   return (
     <div className="mobile-cat-overlay" onClick={onClose}>
-      <div className="mobile-cat" onClick={(e) => e.stopPropagation()}>
-
+      <div
+        className="mobile-cat-popup"
+        onClick={(e) => e.stopPropagation()}
+      >
         <Link to="/" onClick={onClose}>Allbooks</Link>
         <Link to="/Fiction" onClick={onClose}>Fiction</Link>
         <Link to="/Nonfiction" onClick={onClose}>Non-Fiction</Link>
         <Link to="/Childrenbook" onClick={onClose}>Children</Link>
         <Link to="/Comics" onClick={onClose}>Comics / Manga</Link>
-
       </div>
     </div>
   );
