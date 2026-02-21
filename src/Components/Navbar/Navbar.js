@@ -160,11 +160,14 @@ function Navbar() {
     <MobileBottomNav
       user={user}
       onLoginClick={() => setShowLogin(true)}
+      onBooksClick={() => setShowMobileCategories(true)}
     />
+
     <MobileCategories
       show={showMobileCategories}
       onClose={() => setShowMobileCategories(false)}
     />
+
     </div>
   );
 }

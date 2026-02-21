@@ -1,16 +1,16 @@
-import { Link } from "react-router-dom";
 import { FaBookOpen, FaUserCircle, FaShoppingCart, FaSignInAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import "./MobileBottomNav.css";
 
-function MobileBottomNav({ user, onLoginClick }) {
+function MobileBottomNav({ user, onLoginClick, onBooksClick }) {
   return (
     <div className="mobile-bottom-nav">
 
-      {/* Allbooks → navigate only */}
-      <Link to="/" className="mobile-nav-link">
+      {/* Books */}
+      <div className="mobile-nav-link" onClick={onBooksClick}>
         <FaBookOpen />
-        <span>Allbooks</span>
-      </Link>
+        <span>Books</span>
+      </div>
 
       {/* Login / Account */}
       {!user ? (

@@ -15,9 +15,12 @@
   }
 
   .mobile-cat a {
-    text-decoration: none;
-    color: black;
-    font-size: 14px;
-    white-space: nowrap;
+  display: block;
+  padding: 14px;
+  text-decoration: none;
+  color: black;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
   }
+
 }
