@@ -1,4 +1,7 @@
 import axios from "axios";
+import { API_URL } from "../config/api";
+import { clearAuthSession, isAuthError } from "./authSession";
+
 export const addToCart = async (bookObj, navigate, setError) => {
   try {
     const token = localStorage.getItem("token");
@@ -8,12 +11,13 @@ export const addToCart = async (bookObj, navigate, setError) => {
       return;
     }
     await axios.post(
-      "https://futurestorydbackend.onrender.com/api/users/cart",
+      `${API_URL}/api/users/cart`,
       {
         productId: bookObj.id,
         title: bookObj.name,
         image: bookObj.image,   
         price: bookObj.price,
+        priceLabel: bookObj.priceLabel,
         quantity: 1
       },
       {
@@ -22,8 +26,14 @@ export const addToCart = async (bookObj, navigate, setError) => {
         }
       }
     );
-    navigate("/cart");
+    navigate("/Wishlist");
   } catch (err) {
+    if (isAuthError(err)) {
+      clearAuthSession();
+      navigate("/");
+      return;
+    }
+
     setError(err.response?.data?.message || err.message);
   }
 };

@@ -3,7 +3,8 @@ body {
 }
 main {
   flex: 1;
-  padding-bottom: 40px; 
+  width: min(100%, 1500px);
+  padding-bottom: 48px;
 }
 
 footer {
@@ -12,18 +13,6 @@ footer {
   padding: 15px;
   background-color: #1e1e1e;
   color: #fff;
-}
-.card {
-  margin: 30px;
-  text-align: center;
-  background: #fff;
-  transition: transform 0.2s ease;
-}
-
-.card img {
-  width: 100%;
-  height: 250px;     
-  object-fit: cover; 
 }
 :root { --nav-h: 56px; }      
 @media (min-width: 992px) {
@@ -35,10 +24,12 @@ main {
 #root, .navi {
   overflow: visible !important;
 }
-/* 📱 MOBILE ONLY — 2 cards per row */
 @media (max-width: 768px) {
+  main {
+    width: 100%;
+    padding: 16px 12px 88px;
+  }
 
-  /* Parent containers (works even if categories are separate) */
   .row,
   .books,
   .books-container,
@@ -49,17 +40,36 @@ main {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding: 10px;
+    padding: 0;
+    margin-right: 0;
+    margin-left: 0;
   }
 
-  /* Card FIX */
+  .row > * {
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
   .card {
-    margin: 0 !important;     /* 🔥 THIS is the key */
+    margin: 0 !important;
     width: 100%;
   }
 
   .card img {
-    height: 220px;
+    height: 200px;
     border-radius: 10px;
+  }
+}
+
+@media (max-width: 390px) {
+  .row,
+  .books,
+  .books-container,
+  .fiction-container,
+  .nonfiction-container,
+  .comics-container,
+  .children-container {
+    gap: 10px;
   }
 }

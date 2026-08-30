@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
+import { API_URL } from "../../config/api";
+import { GENRE_OPTIONS } from "../../utils/profileOptions";
+import "./Register.css";
 
 function Register({ onClose, onSwitchToLogin }) {
   const {
@@ -19,11 +22,16 @@ function Register({ onClose, onSwitchToLogin }) {
 
   const onSubmit = async (data) => {
     const { confirmPassword, ...userData } = data;
+    const payload = {
+      ...userData,
+      favoriteGenres: userData.favoriteGenres || [],
+      readingGoal: Number(userData.readingGoal) || 0,
+    };
 
     try {
       const res = await axios.post(
-        "https://futurestorydbackend.onrender.com/api/auth/register",
-        userData
+        `${API_URL}/api/auth/register`,
+        payload
       );
 
       if (res.status === 201) onSwitchToLogin();
@@ -34,8 +42,7 @@ function Register({ onClose, onSwitchToLogin }) {
 
   return (
     <div
-      className="card shadow p-4 mx-auto position-relative"
-      style={{ width: "100%", maxWidth: "420px", borderRadius: "12px" }}
+      className="card shadow p-4 mx-auto position-relative register-card"
     >
       <button
         type="button"   
@@ -165,6 +172,54 @@ function Register({ onClose, onSwitchToLogin }) {
             {errors.confirmPassword.message}
           </small>
         )}
+
+        <div className="register-preferences">
+          <h5>Reading Preferences</h5>
+
+          <div className="mb-3">
+            <label className="form-label">Favorite Genres</label>
+            <div className="genre-choice-grid">
+              {GENRE_OPTIONS.map((genre) => (
+                <label className="genre-choice" key={genre}>
+                  <input
+                    type="checkbox"
+                    value={genre}
+                    {...register("favoriteGenres")}
+                  />
+                  <span>{genre}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Favorite Book"
+              {...register("favoriteBook")}
+            />
+          </div>
+
+          <div className="mb-3">
+            <input
+              type="number"
+              className="form-control"
+              placeholder="How many books would you like to read this year?"
+              {...register("readingGoal", {
+                valueAsNumber: true,
+                min: {
+                  value: 0,
+                  message: "Reading goal cannot be negative"
+                }
+              })}
+            />
+            {errors.readingGoal && (
+              <small className="text-danger">{errors.readingGoal.message}</small>
+            )}
+          </div>
+
+        </div>
 
         <button className="btn btn-dark w-100 mt-3">
           Register

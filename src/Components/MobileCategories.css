@@ -1,34 +1,40 @@
-/* overlay to darken background */
 .mobile-cat-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3);
   z-index: 999;
+  background: rgba(11, 24, 29, 0.44);
 }
 
-/* popup list */
 .mobile-cat-popup {
   position: fixed;
-  bottom: 70px; /* 👈 JUST ABOVE bottom navbar */
-  left: 10px;
-  right: 10px;
-
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+  right: 12px;
+  bottom: 88px;
+  left: 12px;
   overflow: hidden;
+  border: 1px solid #dbe8e9;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 -10px 32px rgba(18, 35, 43, 0.24);
 }
 
-/* list items */
 .mobile-cat-popup a {
-  display: block;
-  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  padding: 0 18px;
+  border-bottom: 1px solid #eef3f3;
+  color: #12232b;
+  font-size: 0.98rem;
+  font-weight: 800;
   text-decoration: none;
-  color: #000;
-  font-size: 16px;
-  border-bottom: 1px solid #eee;
+}
+
+.mobile-cat-popup a:hover,
+.mobile-cat-popup a:active {
+  background: #f3f8f8;
+  color: #16616b;
 }
 
 .mobile-cat-popup a:last-child {
-  border-bottom: none;
+  border-bottom: 0;
 }

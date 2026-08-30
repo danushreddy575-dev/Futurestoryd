@@ -17,9 +17,148 @@ html, body, #root {
 }
 body {
   overflow-y: scroll;
+  background: #f5f8f8;
 }
 body::-webkit-scrollbar {
-  display: none;
+  width: 10px;
+}
+body::-webkit-scrollbar-track {
+  background: #eef3f3;
+}
+body::-webkit-scrollbar-thumb {
+  border: 2px solid #eef3f3;
+  border-radius: 999px;
+  background: #9aaeb3;
 }
 
+img {
+  max-width: 100%;
+}
 
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.book-card {
+  display: flex !important;
+  flex-direction: column;
+  width: 100%;
+  height: 520px !important;
+  margin: 0 auto 30px !important;
+  border: none;
+  overflow: hidden;
+  border: 1px solid #e4ecee !important;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(18, 35, 43, 0.08);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  cursor: pointer;
+}
+
+.book-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 34px rgba(18, 35, 43, 0.16);
+}
+
+.book-card-image {
+  width: 100%;
+  height: 240px !important;
+  object-fit: contain;
+  padding: 12px;
+  background: linear-gradient(180deg, #f5f8f8, #edf3f3);
+}
+
+.book-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 12px;
+}
+
+.book-card-title {
+  display: -webkit-box;
+  min-height: 72px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  color: #12232b;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.book-card-price,
+.book-card-rating {
+  margin-bottom: 8px;
+}
+
+.book-card-button {
+  margin-top: auto;
+  padding: 7px 14px;
+  border-radius: 6px !important;
+  border: 0;
+  background: #16616b !important;
+  box-shadow: 0 3px 0 #0d3d44;
+  transition: transform 0.16s ease, background 0.16s ease;
+  cursor: pointer;
+}
+
+.book-card-button:hover {
+  background: #1f7782 !important;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 576px) {
+  .book-card {
+    height: 460px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .book-card-image {
+    height: 200px !important;
+    padding: 10px;
+  }
+
+  .book-card-body {
+    padding: 13px 10px;
+  }
+
+  .book-card-title {
+    min-height: 58px;
+    font-size: 0.92rem;
+  }
+
+  .book-card-button {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .book-card {
+    height: 430px !important;
+  }
+
+  .book-card-image {
+    height: 176px !important;
+  }
+
+  .book-card-title {
+    min-height: 54px;
+    font-size: 0.86rem;
+  }
+
+  .book-card-genre,
+  .book-card-price,
+  .book-card-rating {
+    font-size: 0.85rem;
+  }
+}

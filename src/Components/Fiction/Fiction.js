@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { addToCart } from "../../utils/addToCart";
 import { formatBooks } from "../../utils/formatBooks";
 import { requireAuthCart } from "../../utils/requireAuthCart";
+import { openBookDetails } from "../../utils/bookNavigation";
+import { API_URL } from "../../config/api";
 
+const BOOK_CACHE_KEY = "fictionBooksV6";
 
 function Fiction() {
   const navigate = useNavigate();
@@ -25,7 +28,7 @@ function Fiction() {
     try {
       setLoading(true);
 
-      const cached = localStorage.getItem("fictionBooks");
+      const cached = localStorage.getItem(BOOK_CACHE_KEY);
 
       if (cached) {
         setBooks(JSON.parse(cached));
@@ -34,13 +37,15 @@ function Fiction() {
       }
 
       const res = await axios.get(
-        "https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=20"
+        `${API_URL}/api/books?search=subject:fiction&maxResults=30`
       );
 
-      const formatted = formatBooks(res.data.items, "Fiction");
+      const formatted = formatBooks(res.data, "Fiction");
 
       setBooks(formatted);
-      localStorage.setItem("fictionBooks", JSON.stringify(formatted));
+      if (res.headers["x-books-source"] !== "fallback") {
+        localStorage.setItem(BOOK_CACHE_KEY, JSON.stringify(formatted));
+      }
 
       setLoading(false);
     } catch (err) {
@@ -62,25 +67,34 @@ function Fiction() {
       <div className="row row-cols-1 row-cols-md-5 g-4">
         {books.map((bookObj) => (
           <div className="col text-center" key={bookObj.id}>
-            <div className="card h-80 card-margin">
+            <div
+              className="card h-80 card-margin book-card"
+              role="button"
+              tabIndex="0"
+              onClick={() => openBookDetails(bookObj, navigate)}
+              onKeyDown={(e) => e.key === "Enter" && openBookDetails(bookObj, navigate)}
+            >
               <img
                 src={bookObj.image}
                 alt="Book"
-                className="profileimage"
+                className="profileimage book-card-image"
               />
 
-              <div className="card-body">
-                <h5>{bookObj.name}</h5>
-                <p>{bookObj.genre}</p>
-                <p className="fw-bold">₹{bookObj.price}</p>
-                <p className="text-warning">⭐ {bookObj.rating}</p>
+              <div className="card-body book-card-body">
+                <h5 className="book-card-title">{bookObj.name}</h5>
+                <p className="book-card-genre">{bookObj.genre}</p>
+                <p className="fw-bold book-card-price">{bookObj.priceLabel}</p>
+                <p className="text-warning book-card-rating">⭐ {bookObj.rating}</p>
 
                 {/* ✅ button unchanged */}
                 <button
-                  className="bt"
-                  onClick={() => goToCart(bookObj)}
+                  className="bt book-card-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToCart(bookObj);
+                  }}
                 >
-                  Add To Read
+                  Add To Wishlist
                 </button>
               </div>
             </div>

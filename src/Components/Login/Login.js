@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
+import { API_URL } from "../../config/api";
 
 function Login({ onClose, onLoginSuccess, onSwitchToRegister }) {
   const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ function Login({ onClose, onLoginSuccess, onSwitchToRegister }) {
 
     try {
       const loginRes = await axios.post(
-        "https://futurestorydbackend.onrender.com/api/auth/login",
+        `${API_URL}/api/auth/login`,
         {
           username: username.trim(),
           password: password.trim()
@@ -27,7 +28,7 @@ function Login({ onClose, onLoginSuccess, onSwitchToRegister }) {
       localStorage.setItem("token", token);
 
       const userRes = await axios.get(
-        "https://futurestorydbackend.onrender.com/api/users/me",
+        `${API_URL}/api/users/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`

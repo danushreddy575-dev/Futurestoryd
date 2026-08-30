@@ -1,19 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import { API_URL } from "../../config/api";
+import { useNavigate } from "react-router-dom";
+import { openBookDetails } from "../../utils/bookNavigation";
+import { clearAuthSession, isAuthError } from "../../utils/authSession";
+import "./Cart.css";
 
 function Cart() {
   const [error, setError] = useState("");
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
   const fetchCart = useCallback(async () => {
     try {
       const res = await axios.get(
-        "https://futurestorydbackend.onrender.com/api/users/cart",
+        `${API_URL}/api/users/cart`,
         {
           headers: {
-
-            
             Authorization: `Bearer ${token}`,
           },
         }
@@ -21,13 +25,19 @@ function Cart() {
 
       setCartItems(res.data || []);
     } catch (err) {
+      if (isAuthError(err)) {
+        clearAuthSession();
+        navigate("/");
+        return;
+      }
+
       setError(err.response?.data?.message || err.message);
     }
-  }, [token]);
+  }, [navigate, token]);
 
   useEffect(() => {
     if (!token) {
-      setError("User not logged in");
+      setError("");
       return;
     }
 
@@ -37,7 +47,7 @@ function Cart() {
   const removeFromCart = async (productId) => {
     try {
       const res = await axios.delete(
-        `https://futurestorydbackend.onrender.com/api/users/cart/${productId}`,
+        `${API_URL}/api/users/cart/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,63 +56,100 @@ function Cart() {
       );
       setCartItems(res.data || []);
     } catch (err) { 
+      if (isAuthError(err)) {
+        clearAuthSession();
+        navigate("/");
+        return;
+      }
+
       setError(err.response?.data?.message || err.message);
     }
   };
 
+  const openCartBook = (item) => {
+    openBookDetails(
+      {
+        id: item.productId,
+        name: item.title,
+        image: item.image,
+        price: item.price,
+        priceLabel: item.priceLabel || (item.price ? `₹${item.price}` : "Check store prices"),
+        genre: "Saved Book",
+        rating: item.rating || "Not available",
+        quantity: item.quantity,
+      },
+      navigate
+    );
+  };
+
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 wishlist-page">
 
       {error && (
         <p className="display-6 text-danger text-center">{error}</p>
       )}
 
-
-
-
-      {!error && cartItems.length === 0 && (
-        <div className="text-center mt-5">
-          <h4>Your cart is empty 🛒</h4>
-          <p className="text-muted">Add some books to start reading!</p>
+      {!token && (
+        <div className="wishlist-state-card wishlist-login-card">
+          <span>Wishlist</span>
+          <h2>Login to view your wishlist</h2>
+          <p>
+            Save books you want to buy, compare, or read later after signing in.
+          </p>
         </div>
       )}
 
-      {/* CART ITEMS */}
-      {cartItems.map((item, index) =>(
-        <div
-          className="card mb-3"
-          style={{ maxWidth: "540px" }}
-          key={item._id || `${item.productId}-${index}`}
-        >
-          <div className="row g-0">
- 
-            {/* Image */}
-            <div className="col-md-4">
-              <img
-                src={item.image}
-                className="img-fluid rounded-start"
-                alt={item.title}
-              />
-            </div>
+      {token && !error && cartItems.length === 0 && (
+        <div className="wishlist-state-card">
+          <span>Wishlist</span>
+          <h4>Your wishlist is empty</h4>
+          <p>Add books you want to buy, compare, or explore later.</p>
+        </div>
+      )}
 
-            {/* Details */}
-            <div className="col-md-8">
-              <div className="card-body">
-                <h5 className="card-title">{item.title}</h5>
-                <p>Quantity: {item.quantity}</p>
-                <p className="fw-bold">₹{item.price}</p>
+      {token && cartItems.length > 0 && (
+        <div className="wishlist-header">
+          <div>
+            <span>Saved Books</span>
+            <h2>My Wishlist</h2>
+          </div>
+          <p>{cartItems.length} book{cartItems.length === 1 ? "" : "s"} saved</p>
+        </div>
+      )}
 
-                <button
-                  className="btn btn-danger mt-2"
-                  onClick={() => removeFromCart(item.productId)}
-                >
-                  Remove
-                </button>
-              </div>
+      {/* WISHLIST ITEMS */}
+      <div className="wishlist-grid">
+        {token && cartItems.map((item, index) =>(
+          <div
+            className="wishlist-card"
+            key={item._id || `${item.productId}-${index}`}
+            role="button"
+            tabIndex="0"
+            onClick={() => openCartBook(item)}
+            onKeyDown={(e) => e.key === "Enter" && openCartBook(item)}
+          >
+            <img src={item.image} alt={item.title} />
+
+            <div className="wishlist-card-body">
+              <h5>{item.title}</h5>
+              <p className="wishlist-price">
+                {item.priceLabel || (item.price ? `₹${item.price}` : "Check store prices")}
+              </p>
+              <p className="wishlist-quantity">Quantity: {item.quantity}</p>
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeFromCart(item.productId);
+                }}
+              >
+                Remove
+              </button>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { FaBookOpen, FaUserCircle, FaShoppingCart, FaSignInAlt } from "react-icons/fa";
+import { FaBookOpen, FaUserCircle, FaHeart, FaSignInAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./MobileBottomNav.css";
 
@@ -25,10 +25,10 @@ function MobileBottomNav({ user, onLoginClick, onBooksClick }) {
         </Link>
       )}
 
-      {/* Cart */}
-      <Link to="/Cart" className="mobile-nav-link">
-        <FaShoppingCart />
-        <span>Cart</span>
+      {/* Wishlist */}
+      <Link to="/Wishlist" className="mobile-nav-link">
+        <FaHeart />
+        <span>Wishlist</span>
       </Link>
 
     </div>

@@ -1,17 +1,3 @@
-.card {
-  margin: 30px;
-  border: none;
-  overflow: hidden;
-}
-.profileimage {
-  width: 100%;
-  height: 250px;
-}
-.bt{
-  border-radius: 8%;
-  background-color: rgb(83, 85, 85);
-  color: aliceblue;
-}
 @media (max-width: 768px) {
   .books-grid {
     grid-template-columns: repeat(2, 1fr);

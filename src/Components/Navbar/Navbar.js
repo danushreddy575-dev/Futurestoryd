@@ -1,17 +1,23 @@
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Modal from "../Modal/Modal";
 import Login from "../Login/Login";
 import Register from "../Registration/Register";
 import MobileBottomNav from "./MobileBottomNav";
 import MobileCategories from "../MobileCategories";
-import { FaUserCircle, FaShoppingCart, FaBookOpen } from "react-icons/fa";
+import { API_URL } from "../../config/api";
+import { FaUserCircle, FaHeart, FaSearch } from "react-icons/fa";
 
 function Navbar() {
+  const navigate = useNavigate();
   const [showMobileCategories, setShowMobileCategories] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [user, setUser] = useState(null);
   const closeLogin = () => setShowLogin(false);
   const closeRegister = () => setShowRegister(false);
@@ -43,6 +49,38 @@ function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    const query = searchText.trim();
+
+    if (query.length < 2) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await axios.get(
+          `${API_URL}/api/books?search=${encodeURIComponent(query)}&maxResults=5`
+        );
+
+        const titles = (res.data || [])
+          .map((item) => item.volumeInfo?.title)
+          .filter(Boolean)
+          .filter((title, index, list) => list.indexOf(title) === index)
+          .slice(0, 5);
+
+        setSuggestions(titles);
+        setShowSuggestions(titles.length > 0);
+      } catch (err) {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
 
   const handleLoginSuccess = () => {
     const storedUser = localStorage.getItem("user");
@@ -52,20 +90,40 @@ function Navbar() {
     window.dispatchEvent(new Event("authChanged"));
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    searchBooks(searchText);
+  };
+
+  const searchBooks = (value) => {
+    const query = value.trim();
+    if (!query) return;
+
+    navigate(`/Search?q=${encodeURIComponent(query)}`);
+    setSearchText("");
+    setSuggestions([]);
+    setShowSuggestions(false);
+  };
+
   return (
     <div className="navi">
       <nav
         className="navbar navbar-expand-lg fixed-top"
-        style={{ backgroundColor: "#aeb6baff" }}
       >
         <div className="container-fluid">
 
-          {/* LEFT LINKS (your old UI kept) */}
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <Link className="brand-logo" to="/" aria-label="FutureStoryd home">
+            <span className="brand-future">Future</span>
+            <span className="brand-storyd">Storyd</span>
+          </Link>
+
+          {/* SECTION LINKS */}
+          <ul className="navbar-nav nav-section-links mb-2 mb-lg-0">
 
             <li className="nav-item">
               <Link className="nav-link" to="/">
-                <FaBookOpen size={24} /> Allbooks
+                Allbooks
               </Link>
             </li>
 
@@ -88,6 +146,37 @@ function Navbar() {
           </ul>
 
           {/* RIGHT SIDE */}
+          <form className="nav-search-form" onSubmit={handleSearch}>
+            <input
+              className="nav-search-input"
+              type="search"
+              placeholder="Search books"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onFocus={() => setShowSuggestions(suggestions.length > 0)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+              aria-label="Search books"
+            />
+            <button className="nav-search-button" type="submit" aria-label="Search">
+              <FaSearch size={14} />
+            </button>
+
+            {showSuggestions && (
+              <div className="nav-search-suggestions">
+                {suggestions.map((title) => (
+                  <button
+                    className="nav-search-suggestion"
+                    key={title}
+                    type="button"
+                    onMouseDown={() => searchBooks(title)}
+                  >
+                    {title}
+                  </button>
+                ))}
+              </div>
+            )}
+          </form>
+
           <ul className="navbar-nav mb-2 mb-lg-0">
 
             {!user && (
@@ -117,10 +206,10 @@ function Navbar() {
             <li className="nav-item">
               <Link
                 className="nav-link"
-                to="/Cart"
+                to="/Wishlist"
                 style={{ marginLeft: "15px" }}
               >
-                <FaShoppingCart size={24} />
+                <FaHeart size={24} />
               </Link>
             </li>
 

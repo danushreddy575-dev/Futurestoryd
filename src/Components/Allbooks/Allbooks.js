@@ -6,7 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { formatBooks } from "../../utils/formatBooks";
 import { addToCart } from "../../utils/addToCart";
 import { requireAuthCart } from "../../utils/requireAuthCart";
+import {
+  getRecentlyViewedBooks,
+  openBookDetails,
+  removeRecentlyViewedBook,
+} from "../../utils/bookNavigation";
+import { API_URL } from "../../config/api";
 
+const BOOK_CACHE_KEY = "allBooksSectionsV6";
 
 function Allbooks() {
   const navigate = useNavigate();
@@ -16,6 +23,8 @@ function Allbooks() {
   const [nonfiction, setNonfiction] = useState([]);
   const [comics, setComics] = useState([]);
   const [children, setChildren] = useState([]);
+  const [recentBooks, setRecentBooks] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(Boolean(localStorage.getItem("token")));
 
   const goToCart = (bookObj) => {
   requireAuthCart(bookObj, navigate, setError, addToCart);
@@ -23,11 +32,43 @@ function Allbooks() {
 
 
   useEffect(() => {
+    const syncLoginState = () => {
+      setIsLoggedIn(Boolean(localStorage.getItem("token")));
+    };
+
+    syncLoginState();
+    window.addEventListener("authChanged", syncLoginState);
+
+    return () => {
+      window.removeEventListener("authChanged", syncLoginState);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    const loadRecentBooks = () => {
+      if (isLoggedIn) {
+        setRecentBooks(getRecentlyViewedBooks());
+      } else {
+        setRecentBooks([]);
+      }
+    };
+
+    loadRecentBooks();
+    window.addEventListener("recentBooksChanged", loadRecentBooks);
+
+    return () => {
+      window.removeEventListener("recentBooksChanged", loadRecentBooks);
+    };
+  }, [isLoggedIn]);
+
+
+  useEffect(() => {
   const fetchAll = async () => {
     try {
       setLoading(true);
 
-      const cached = localStorage.getItem("allBooksSections");
+      const cached = localStorage.getItem(BOOK_CACHE_KEY);
 
       if (cached) {
         const data = JSON.parse(cached);
@@ -40,31 +81,37 @@ function Allbooks() {
       }
 
       const [f, n, c, ch] = await Promise.all([
-        axios.get("https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=8"),
-        axios.get("https://www.googleapis.com/books/v1/volumes?q=subject:nonfiction&maxResults=8"),
-        axios.get("https://www.googleapis.com/books/v1/volumes?q=subject:comics&maxResults=8"),
-        axios.get("https://www.googleapis.com/books/v1/volumes?q=subject:children&maxResults=8")
+        axios.get(`${API_URL}/api/books?search=subject:fiction&maxResults=10`),
+        axios.get(`${API_URL}/api/books?search=subject:nonfiction&maxResults=10`),
+        axios.get(`${API_URL}/api/books?search=subject:comics&maxResults=10`),
+        axios.get(`${API_URL}/api/books?search=subject:children&maxResults=10`)
       ]);
 
-      const fictionData = formatBooks(f.data.items, "Fiction");
-      const nonfictionData = formatBooks(n.data.items, "Nonfiction");
-      const comicsData = formatBooks(c.data.items, "Comics");
-      const childrenData = formatBooks(ch.data.items, "Children");
+      const fictionData = formatBooks(f.data, "Fiction");
+      const nonfictionData = formatBooks(n.data, "Nonfiction");
+      const comicsData = formatBooks(c.data, "Comics");
+      const childrenData = formatBooks(ch.data, "Children");
 
       setFiction(fictionData);
       setNonfiction(nonfictionData);
       setComics(comicsData);
       setChildren(childrenData);
 
-      localStorage.setItem(
-        "allBooksSections",
-        JSON.stringify({
-          fiction: fictionData,
-          nonfiction: nonfictionData,
-          comics: comicsData,
-          children: childrenData
-        })
+      const hasFallbackData = [f, n, c, ch].some(
+        (res) => res.headers["x-books-source"] === "fallback"
       );
+
+      if (!hasFallbackData) {
+        localStorage.setItem(
+          BOOK_CACHE_KEY,
+          JSON.stringify({
+            fiction: fictionData,
+            nonfiction: nonfictionData,
+            comics: comicsData,
+            children: childrenData
+          })
+        );
+      }
 
       setLoading(false);
     } catch (err) {
@@ -86,24 +133,33 @@ function Allbooks() {
       <div className="row row-cols-1 row-cols-md-4 g-4">
         {books.map((book) => (
           <div className="col text-center" key={book.id}>
-            <div className="card h-80 card-margin">
+            <div
+              className="card h-80 card-margin book-card"
+              role="button"
+              tabIndex="0"
+              onClick={() => openBookDetails(book, navigate)}
+              onKeyDown={(e) => e.key === "Enter" && openBookDetails(book, navigate)}
+            >
               <img
                 src={book.image}
                 alt="Book"
-                className="profileimage"
+                className="profileimage book-card-image"
               />
 
-              <div className="card-body">
-                <h6>{book.name}</h6>
-                <p>{book.genre}</p>
-                <p className="fw-bold">₹{book.price}</p>
-                <p className="text-warning">⭐ {book.rating}</p>
+              <div className="card-body book-card-body">
+                <h6 className="book-card-title">{book.name}</h6>
+                <p className="book-card-genre">{book.genre}</p>
+                <p className="fw-bold book-card-price">{book.priceLabel}</p>
+                <p className="text-warning book-card-rating">⭐ {book.rating}</p>
 
                 <button
-                  className="bt"
-                  onClick={() => goToCart(book)}
+                  className="bt book-card-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToCart(book);
+                  }}
                 >
-                  Add To Read
+                  Add To Wishlist
                 </button>
               </div>
             </div>
@@ -113,16 +169,70 @@ function Allbooks() {
     </div>
   );
 
+  const renderRecentBooks = () => {
+    if (!isLoggedIn) {
+      return (
+        <div className="recent-login-card">
+          <span>Recently Viewed</span>
+          <h2>Login to keep your book history</h2>
+          <p>Your recently viewed books will appear here after you sign in.</p>
+        </div>
+      );
+    }
+
+    if (recentBooks.length === 0) return null;
+
+    return (
+      <div className="recent-books-section">
+        <div className="recent-books-header">
+          <h2>Recently Viewed</h2>
+          <span>{recentBooks.length} saved locally</span>
+        </div>
+
+        <div className="recent-books-grid">
+          {recentBooks.map((book) => (
+            <div
+              className="recent-book-card"
+              key={book.id}
+              role="button"
+              tabIndex="0"
+              onClick={() => openBookDetails(book, navigate)}
+              onKeyDown={(e) => e.key === "Enter" && openBookDetails(book, navigate)}
+            >
+              <img src={book.image} alt={book.name} />
+              <div>
+                <h6>{book.name}</h6>
+                <p>{book.authors?.[0] || book.genre}</p>
+              </div>
+              <button
+                type="button"
+                className="recent-book-remove"
+                aria-label={`Remove ${book.name} from recently viewed`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeRecentlyViewedBook(book.id);
+                }}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 allbooks-page">
       {error && (
         <p className="text-danger text-center">{error}</p>
       )}
 
-      {renderSection("Top Fiction Books",fiction,"fiction")}
-      {renderSection("Top Nonfiction Books", nonfiction,"nonfiction")}
+      {renderRecentBooks()}
+      {renderSection("Fiction Books",fiction,"fiction")}
+      {renderSection("Nonfiction Books", nonfiction,"nonfiction")}
       {renderSection("Top Comics", comics,"comics")}
-      {renderSection("Top Children Books", children,"children")}
+      {renderSection("Children Books", children,"children")}
     </div>
   );
 }
