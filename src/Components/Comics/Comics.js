@@ -4,6 +4,7 @@ import "./Comics.css";
 import { useNavigate } from "react-router-dom";
 import { addToCart } from "../../utils/addToCart";
 import { formatBooks } from "../../utils/formatBooks";
+import { getFallbackBooks } from "../../utils/fallbackBooks";
 import { requireAuthCart } from "../../utils/requireAuthCart";
 import { openBookDetails } from "../../utils/bookNavigation";
 import { API_URL } from "../../config/api";
@@ -36,6 +37,12 @@ function Comics() {
         return;
       }
 
+      if (!API_URL) {
+        setBooks(getFallbackBooks("Comics", 30));
+        setLoading(false);
+        return;
+      }
+
       const res = await axios.get(
         `${API_URL}/api/books?search=subject:comics&maxResults=30`
       );
@@ -49,7 +56,8 @@ function Comics() {
 
       setLoading(false);
     } catch (err) {
-      setError(err.message);
+      setBooks(getFallbackBooks("Comics", 30));
+      setError("");
       setLoading(false);
     }
   };

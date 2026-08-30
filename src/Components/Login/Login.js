@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
-import { API_URL } from "../../config/api";
+import { API_SETUP_MESSAGE, API_URL } from "../../config/api";
 
 function Login({ onClose, onLoginSuccess, onSwitchToRegister }) {
   const [username, setUsername] = useState("");
@@ -14,6 +14,11 @@ function Login({ onClose, onLoginSuccess, onSwitchToRegister }) {
     setError("");
 
     try {
+      if (!API_URL) {
+        setError(API_SETUP_MESSAGE);
+        return;
+      }
+
       const loginRes = await axios.post(
         `${API_URL}/api/auth/login`,
         {

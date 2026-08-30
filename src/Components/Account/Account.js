@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_URL } from "../../config/api";
+import { API_SETUP_MESSAGE, API_URL } from "../../config/api";
 import { clearAuthSession, isAuthError } from "../../utils/authSession";
 import { GENRE_OPTIONS } from "../../utils/profileOptions";
 import "./Account.css";
@@ -35,6 +35,12 @@ function Account() {
       }
 
       try {
+        if (!API_URL) {
+          clearAuthSession();
+          navigate("/");
+          return;
+        }
+
         const res = await axios.get(
           `${API_URL}/api/users/me`,
           {
@@ -91,6 +97,11 @@ function Account() {
     try {
       setSaving(true);
       setMessage("");
+
+      if (!API_URL) {
+        setMessage(API_SETUP_MESSAGE);
+        return;
+      }
 
       const res = await axios.put(
         `${API_URL}/api/users/me`,

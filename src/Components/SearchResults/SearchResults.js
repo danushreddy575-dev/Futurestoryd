@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { API_URL } from "../../config/api";
+import { API_SETUP_MESSAGE, API_URL } from "../../config/api";
 import { addToCart } from "../../utils/addToCart";
 import { formatBooks } from "../../utils/formatBooks";
 import { requireAuthCart } from "../../utils/requireAuthCart";
+import { getFallbackSearchBooks } from "../../utils/fallbackBooks";
 import { openBookDetails } from "../../utils/bookNavigation";
 import "./SearchResults.css";
 
@@ -44,6 +45,13 @@ function SearchResults() {
       try {
         setLoading(true);
         setError("");
+
+        if (!API_URL) {
+          setBooks(getFallbackSearchBooks(query, 12));
+          setError(API_SETUP_MESSAGE);
+          return;
+        }
+
         const search = buildSearchQuery(query, searchBy, "");
         const params = new URLSearchParams({
           search,
@@ -57,7 +65,8 @@ function SearchResults() {
         setBooks(formatBooks(res.data, "Search"));
         setError("");
       } catch (err) {
-        setError(err.response?.data?.message || err.message);
+        setBooks(getFallbackSearchBooks(query, 12));
+        setError("");
       } finally {
         setLoading(false);
       }

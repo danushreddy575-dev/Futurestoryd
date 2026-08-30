@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { formatBooks } from "../../utils/formatBooks";
 import { addToCart } from "../../utils/addToCart";
+import { getFallbackBooks } from "../../utils/fallbackBooks";
 import { requireAuthCart } from "../../utils/requireAuthCart";
 import {
   getRecentlyViewedBooks,
@@ -84,6 +85,15 @@ function Allbooks() {
         }
       }
 
+      if (!API_URL) {
+        setFiction(getFallbackBooks("Fiction", 10));
+        setNonfiction(getFallbackBooks("Nonfiction", 10));
+        setComics(getFallbackBooks("Comics", 10));
+        setChildren(getFallbackBooks("Children", 10));
+        setLoading(false);
+        return;
+      }
+
       const [f, n, c, ch] = await Promise.all([
         axios.get(`${API_URL}/api/books?search=subject:fiction&maxResults=10`),
         axios.get(`${API_URL}/api/books?search=subject:nonfiction&maxResults=10`),
@@ -119,7 +129,11 @@ function Allbooks() {
 
       setLoading(false);
     } catch (err) {
-      setError("Books are temporarily unavailable. Please try again in a moment.");
+      setFiction(getFallbackBooks("Fiction", 10));
+      setNonfiction(getFallbackBooks("Nonfiction", 10));
+      setComics(getFallbackBooks("Comics", 10));
+      setChildren(getFallbackBooks("Children", 10));
+      setError("");
       setLoading(false);
     }
   };

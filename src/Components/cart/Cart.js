@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { API_URL } from "../../config/api";
+import { API_SETUP_MESSAGE, API_URL } from "../../config/api";
 import { useNavigate } from "react-router-dom";
 import { openBookDetails } from "../../utils/bookNavigation";
 import { clearAuthSession, isAuthError } from "../../utils/authSession";
@@ -14,6 +14,11 @@ function Cart() {
   const token = localStorage.getItem("token");
   const fetchCart = useCallback(async () => {
     try {
+      if (!API_URL) {
+        setError(API_SETUP_MESSAGE);
+        return;
+      }
+
       const res = await axios.get(
         `${API_URL}/api/users/cart`,
         {
@@ -46,6 +51,11 @@ function Cart() {
 
   const removeFromCart = async (productId) => {
     try {
+      if (!API_URL) {
+        setError(API_SETUP_MESSAGE);
+        return;
+      }
+
       const res = await axios.delete(
         `${API_URL}/api/users/cart/${productId}`,
         {

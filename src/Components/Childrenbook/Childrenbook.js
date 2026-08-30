@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { addToCart } from "../../utils/addToCart";
 import { formatBooks } from "../../utils/formatBooks";
+import { getFallbackBooks } from "../../utils/fallbackBooks";
 import { requireAuthCart } from "../../utils/requireAuthCart";
 import { openBookDetails } from "../../utils/bookNavigation";
 import { API_URL } from "../../config/api";
@@ -32,6 +33,11 @@ function Childrenbook() {
         return;
       }
 
+      if (!API_URL) {
+        setBooks(getFallbackBooks("Children", 30));
+        return;
+      }
+
       const res = await axios.get(
         `${API_URL}/api/books?search=subject:children&maxResults=30`
       );
@@ -44,7 +50,8 @@ function Childrenbook() {
       }
 
     } catch (err) {
-      setError(err.message);
+      setBooks(getFallbackBooks("Children", 30));
+      setError("");
     }
   };
 

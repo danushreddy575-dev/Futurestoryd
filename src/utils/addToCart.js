@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../config/api";
+import { API_SETUP_MESSAGE, API_URL } from "../config/api";
 import { clearAuthSession, isAuthError } from "./authSession";
 
 export const addToCart = async (bookObj, navigate, setError) => {
@@ -10,6 +10,12 @@ export const addToCart = async (bookObj, navigate, setError) => {
       navigate("/login");
       return;
     }
+
+    if (!API_URL) {
+      setError(API_SETUP_MESSAGE);
+      return;
+    }
+
     await axios.post(
       `${API_URL}/api/users/cart`,
       {

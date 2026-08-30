@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
-import { API_URL } from "../../config/api";
+import { API_SETUP_MESSAGE, API_URL } from "../../config/api";
 import { GENRE_OPTIONS } from "../../utils/profileOptions";
 import "./Register.css";
 
@@ -29,6 +29,11 @@ function Register({ onClose, onSwitchToLogin }) {
     };
 
     try {
+      if (!API_URL) {
+        setMessage(API_SETUP_MESSAGE);
+        return;
+      }
+
       const res = await axios.post(
         `${API_URL}/api/auth/register`,
         payload

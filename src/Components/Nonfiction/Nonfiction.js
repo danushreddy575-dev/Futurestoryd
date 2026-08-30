@@ -4,6 +4,7 @@ import "./Nonfiction.css";
 import { useNavigate } from "react-router-dom";
 import { addToCart } from "../../utils/addToCart";
 import { formatBooks } from "../../utils/formatBooks";
+import { getFallbackBooks } from "../../utils/fallbackBooks";
 import { requireAuthCart } from "../../utils/requireAuthCart";
 import { openBookDetails } from "../../utils/bookNavigation";
 import { API_URL } from "../../config/api";
@@ -35,6 +36,12 @@ function Nonfiction() {
         return;
       }
 
+      if (!API_URL) {
+        setBooks(getFallbackBooks("Nonfiction", 30));
+        setLoading(false);
+        return;
+      }
+
       const res = await axios.get(
         `${API_URL}/api/books?search=subject:nonfiction&maxResults=30`
       );
@@ -48,7 +55,8 @@ function Nonfiction() {
 
       setLoading(false);
     } catch (err) {
-      setError(err.message);
+      setBooks(getFallbackBooks("Nonfiction", 30));
+      setError("");
       setLoading(false);
     }
   };
