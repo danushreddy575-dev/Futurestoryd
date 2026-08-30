@@ -71,13 +71,17 @@ function Allbooks() {
       const cached = localStorage.getItem(BOOK_CACHE_KEY);
 
       if (cached) {
-        const data = JSON.parse(cached);
-        setFiction(data.fiction);
-        setNonfiction(data.nonfiction);
-        setComics(data.comics);
-        setChildren(data.children);
-        setLoading(false);
-        return;
+        try {
+          const data = JSON.parse(cached);
+          setFiction(data.fiction || []);
+          setNonfiction(data.nonfiction || []);
+          setComics(data.comics || []);
+          setChildren(data.children || []);
+          setLoading(false);
+          return;
+        } catch (cacheError) {
+          localStorage.removeItem(BOOK_CACHE_KEY);
+        }
       }
 
       const [f, n, c, ch] = await Promise.all([
@@ -115,7 +119,7 @@ function Allbooks() {
 
       setLoading(false);
     } catch (err) {
-      setError(err.message);
+      setError("Books are temporarily unavailable. Please try again in a moment.");
       setLoading(false);
     }
   };
