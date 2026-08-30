@@ -7,6 +7,7 @@ import { formatBooks } from "../../utils/formatBooks";
 import { addToCart } from "../../utils/addToCart";
 import { getFallbackBooks } from "../../utils/fallbackBooks";
 import { requireAuthCart } from "../../utils/requireAuthCart";
+import BookSkeleton from "../BookSkeleton";
 import {
   getRecentlyViewedBooks,
   openBookDetails,
@@ -19,7 +20,7 @@ const BOOK_CACHE_KEY = "allBooksSectionsV6";
 function Allbooks() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const [ ,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [fiction, setFiction] = useState([]);
   const [nonfiction, setNonfiction] = useState([]);
   const [comics, setComics] = useState([]);
@@ -148,6 +149,9 @@ function Allbooks() {
     <h2 className={`section-title ${className}`}>
       {title}
     </h2>
+      {loading && books.length === 0 ? (
+        <BookSkeleton count={4} className="row-cols-2 row-cols-md-4" />
+      ) : (
       <div className="row row-cols-1 row-cols-md-4 g-4">
         {books.map((book) => (
           <div className="col text-center" key={book.id}>
@@ -184,6 +188,7 @@ function Allbooks() {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 

@@ -9,6 +9,7 @@ import { getFallbackBooks } from "../../utils/fallbackBooks";
 import { requireAuthCart } from "../../utils/requireAuthCart";
 import { openBookDetails } from "../../utils/bookNavigation";
 import { API_URL } from "../../config/api";
+import BookSkeleton from "../BookSkeleton";
 
 const BOOK_CACHE_KEY = "childrenBooksV6";
 
@@ -17,6 +18,7 @@ function Childrenbook() {
 
   const [error, setError] = useState("");
   const [books, setBooks] = useState([]); 
+  const [loading, setLoading] = useState(false);
 
   const goToCart = (bookObj) => {
   requireAuthCart(bookObj, navigate, setError, addToCart);
@@ -26,15 +28,18 @@ function Childrenbook() {
   useEffect(() => {
   const fetchBooks = async () => {
     try {
+      setLoading(true);
       const cached = localStorage.getItem(BOOK_CACHE_KEY);
 
       if (cached) {
         setBooks(JSON.parse(cached));
+        setLoading(false);
         return;
       }
 
       if (!API_URL) {
         setBooks(getFallbackBooks("Children", 30));
+        setLoading(false);
         return;
       }
 
@@ -49,9 +54,12 @@ function Childrenbook() {
         localStorage.setItem(BOOK_CACHE_KEY, JSON.stringify(formatted));
       }
 
+      setLoading(false);
+
     } catch (err) {
       setBooks(getFallbackBooks("Children", 30));
       setError("");
+      setLoading(false);
     }
   };
 
@@ -65,6 +73,9 @@ function Childrenbook() {
         <p className="display-6 text-danger text-center">{error}</p>
       )}
 
+      {loading && books.length === 0 ? (
+        <BookSkeleton count={10} />
+      ) : (
       <div className="row row-cols-1 row-cols-md-5 g-4">
         {books.map(bookObj => (   
           <div className="col text-center" key={bookObj.id}>
@@ -97,6 +108,7 @@ function Childrenbook() {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { formatBooks } from "../../utils/formatBooks";
 import { requireAuthCart } from "../../utils/requireAuthCart";
 import { getFallbackSearchBooks } from "../../utils/fallbackBooks";
 import { openBookDetails } from "../../utils/bookNavigation";
+import BookSkeleton from "../BookSkeleton";
 import "./SearchResults.css";
 
 const buildSearchQuery = (query, searchBy, subject) => {
@@ -107,13 +108,15 @@ function SearchResults() {
         </div>
       )}
 
-      {loading && <p className="text-center">Loading...</p>}
       {error && <p className="display-6 text-danger text-center">{error}</p>}
 
       {!loading && !error && query && books.length === 0 && (
         <p className="text-center">No books found.</p>
       )}
 
+      {loading && books.length === 0 ? (
+        <BookSkeleton count={10} />
+      ) : (
       <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-5 g-4 search-results-grid">
         {books.map((bookObj) => (
           <div className="col text-center" key={bookObj.id}>
@@ -150,6 +153,7 @@ function SearchResults() {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 }

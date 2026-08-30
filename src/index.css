@@ -115,6 +115,77 @@ select {
   transform: translateY(-1px);
 }
 
+.book-skeleton-card {
+  pointer-events: none;
+}
+
+.book-skeleton-cover,
+.book-skeleton-line,
+.book-skeleton-button {
+  position: relative;
+  overflow: hidden;
+  background: #e7eeee;
+}
+
+.book-skeleton-cover::after,
+.book-skeleton-line::after,
+.book-skeleton-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.72), transparent);
+  animation: bookSkeletonShimmer 1.3s infinite;
+}
+
+.book-skeleton-cover {
+  width: 100%;
+  height: 240px;
+  border-radius: 0;
+  background: linear-gradient(180deg, #edf3f3, #dfe9ea);
+}
+
+.book-skeleton-body {
+  gap: 12px;
+}
+
+.book-skeleton-line {
+  display: block;
+  height: 14px;
+  border-radius: 999px;
+}
+
+.book-skeleton-line.title {
+  width: 76%;
+  height: 18px;
+  margin-top: 8px;
+}
+
+.book-skeleton-line.short {
+  width: 46%;
+}
+
+.book-skeleton-line.price {
+  width: 34%;
+}
+
+.book-skeleton-line.rating {
+  width: 42%;
+}
+
+.book-skeleton-button {
+  width: 130px;
+  height: 36px;
+  margin-top: auto;
+  border-radius: 6px;
+}
+
+@keyframes bookSkeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 @media (max-width: 576px) {
   .book-card {
     height: 460px !important;
@@ -124,6 +195,10 @@ select {
   .book-card-image {
     height: 200px !important;
     padding: 10px;
+  }
+
+  .book-skeleton-cover {
+    height: 200px;
   }
 
   .book-card-body {
@@ -140,6 +215,10 @@ select {
     padding: 8px 10px;
     font-size: 0.88rem;
   }
+
+  .book-skeleton-button {
+    width: 100%;
+  }
 }
 
 @media (max-width: 390px) {
@@ -149,6 +228,10 @@ select {
 
   .book-card-image {
     height: 176px !important;
+  }
+
+  .book-skeleton-cover {
+    height: 176px;
   }
 
   .book-card-title {

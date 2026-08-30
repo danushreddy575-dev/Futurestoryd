@@ -8,6 +8,7 @@ import { getFallbackBooks } from "../../utils/fallbackBooks";
 import { requireAuthCart } from "../../utils/requireAuthCart";
 import { openBookDetails } from "../../utils/bookNavigation";
 import { API_URL } from "../../config/api";
+import BookSkeleton from "../BookSkeleton";
 
 const BOOK_CACHE_KEY = "nonfictionBooksV6";
 
@@ -20,7 +21,7 @@ function Nonfiction() {
   const goToCart = (bookObj) => {
   requireAuthCart(bookObj, navigate, setError, addToCart);
 };
-    const [, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
   // fetch nonfiction books
   useEffect(() => {
@@ -72,6 +73,9 @@ function Nonfiction() {
         <p className="display-6 text-danger text-center">{error}</p>
       )}
 
+      {loading && books.length === 0 ? (
+        <BookSkeleton count={10} />
+      ) : (
       <div className="row row-cols-1 row-cols-md-5 g-4">
         {books.map((bookObj) => (
           <div className="col text-center" key={bookObj.id}>
@@ -109,6 +113,7 @@ function Nonfiction() {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 }
